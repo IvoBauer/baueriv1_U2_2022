@@ -93,6 +93,7 @@ public AppWindow(Callable<Integer> setApp) {
 	Scrollbar scrollbarMedianFilterSize = new Scrollbar(HORIZONTAL, 0, 0, 0,  4);
 	scrollbarMedianFilterSize.setBounds (40, 205, 100, 20);
 	scrollbarMedianFilterSize.setBackground(Color.white);
+	scrollbarMedianFilterSize.setEnabled(false);
 	add(scrollbarMedianFilterSize);
 	add(scrollbarMeanFilterSize);
 	add(medianSize);
