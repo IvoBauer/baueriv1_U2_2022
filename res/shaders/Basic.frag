@@ -1,16 +1,16 @@
 #version 330
 in vec2 texCoords;
 
-uniform float u_ColorR;
+uniform int u_FilterMode;
 uniform int u_FilterSize;
 uniform sampler2D textureBase;
 //uniform sampler2D textureNormal;
 
 out vec4 outColor;
 
-float arrayRedChannel[50];
-float arrayGreenChannel[50];
-float arrayBlueChannel[50];
+float arrayRedChannel[365];
+float arrayGreenChannel[365];
+float arrayBlueChannel[365];
 
 void bubbleSort(int n)
 {
@@ -53,9 +53,41 @@ void bubbleSort(int n)
     }
 }
 
-vec4 obarviPixel(){
+vec4 getColorFromMedian(int pixelIndex){
+    //median
+    int numberOfMissingPixels = (u_FilterSize*u_FilterSize) - pixelIndex;
+    for (int i = pixelIndex; i < numberOfMissingPixels; i++){
+        arrayRedChannel[pixelIndex] = 0;
+        arrayGreenChannel[pixelIndex] = 0;
+        arrayBlueChannel[pixelIndex] = 0;
+    }
 
-    int imageWidth = 716;
+    int testValue = u_FilterSize * u_FilterSize;
+
+    bubbleSort(testValue);
+    highp int filterValue = int(round((u_FilterSize*u_FilterSize)/2.f));
+    vec4 colorFromMedian = vec4(arrayRedChannel[filterValue],arrayGreenChannel[filterValue],arrayBlueChannel[filterValue],1.f);
+    return colorFromMedian;
+}
+
+vec4 getColorFromMean(int pixelIndex){
+    float red = 0;
+    float green = 0;
+    float blue = 0;
+
+    for (int i = 0; i < pixelIndex; i++)
+    {
+        red += arrayRedChannel[i];
+        green += arrayGreenChannel[i];
+        blue += arrayBlueChannel[i];
+    }
+
+    vec4 colorFromMean = vec4(red/pixelIndex,green/pixelIndex,blue/pixelIndex,1.f);
+    return colorFromMean;
+}
+
+vec4 obarviPixel(){
+    int imageWidth = 716; //TODO
     int imageHeight = 630;
     float filterIndex = (u_FilterSize-1)/2;
 
@@ -88,7 +120,6 @@ vec4 obarviPixel(){
     }
 
     int pixelIndex = 0;
-
     for (int j = istartY; j <= iendY; j++){
         for (int i = istartX; i <= iendX; i++){
             float pixelPosX = i/ float(imageWidth);
@@ -100,18 +131,16 @@ vec4 obarviPixel(){
         }
     }
 
-    int numberOfMissingPixels = (u_FilterSize*u_FilterSize) - pixelIndex;
-    for (int i = pixelIndex; i < numberOfMissingPixels; i++){
-        arrayRedChannel[pixelIndex] = 0;
-        arrayGreenChannel[pixelIndex] = 0;
-        arrayBlueChannel[pixelIndex] = 0;
+
+    vec4 calculatedColor = vec4(0.f, 1.f, 0.f,1.f);
+
+    //median
+    if (u_FilterMode == 1){
+        calculatedColor = getColorFromMedian(pixelIndex);
+    } else {
+        calculatedColor = getColorFromMean(pixelIndex);
     }
 
-    int testValue = u_FilterSize * u_FilterSize;
-
-    bubbleSort(testValue);
-    highp int filterValue = int(round((u_FilterSize*u_FilterSize)/2.f));
-    vec4 calculatedColor = vec4(arrayRedChannel[filterValue],arrayGreenChannel[filterValue],arrayBlueChannel[filterValue],1.f);
     return calculatedColor;
 }
 
@@ -120,7 +149,7 @@ void main() {
     if (u_FilterSize == 0){
         vyslednaBarva = texture(textureBase, texCoords).rgba;
     } else {
-        vyslednaBarva = obarviPixel();
+            vyslednaBarva = obarviPixel();
     }
 
     outColor = vyslednaBarva;

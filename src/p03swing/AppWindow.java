@@ -54,59 +54,90 @@ public AppWindow(Callable<Integer> setApp) {
 	};
 
 	CheckboxGroup checkBoxGroup = new CheckboxGroup();
-	Checkbox checkBox1 = new Checkbox("Median", checkBoxGroup, false);
-	checkBox1.setBounds(40,40, 100,50);
-	Checkbox checkBox2 = new Checkbox("Mean", checkBoxGroup, true);
-	checkBox2.setBounds(40,75, 100,50);
+	Checkbox checkBox1 = new Checkbox("Mean", checkBoxGroup, true);
+	checkBox1.setBounds(30,40, 100,50);
+	Checkbox checkBox2 = new Checkbox("Median", checkBoxGroup, false);
+	checkBox2.setBounds(30,140, 100,50);
 	add(checkBox1);
 	add(checkBox2);
 
-	checkBox1.addItemListener(new ItemListener() {
-		public void itemStateChanged(ItemEvent e) {
-			System.out.println("CHOICE1");
-		}
-	});
-	checkBox2.addItemListener(new ItemListener() {
-		public void itemStateChanged(ItemEvent e) {
-			System.out.println("CHOICE2");
-		}
-	});
 
 	Label labelMode = new Label ("Mód filtru:");
-	Label filterSize = new Label ("Velikost filtru: 0");
+	Label meanSize = new Label ("Velikost filtru: 0 px");
+	Label medianSize = new Label ("Velikost filtru: 0 px");
 
 	// set the location of label
 	labelMode.setBounds(30, 20, 100, 30);
-	filterSize.setBounds(30, 130, 100, 30);
+	meanSize.setBounds(45, 80, 110, 30);
+	medianSize.setBounds(45, 180, 110, 30);
 
 	// adding labels to the frame
 	add(labelMode);
 
 
-	Scrollbar scrollbarFilterSize = new Scrollbar(HORIZONTAL, 0, 0, 0,  4);
+	Scrollbar scrollbarMeanFilterSize = new Scrollbar(HORIZONTAL, 0, 0, 0,  8);
+	scrollbarMeanFilterSize.setBounds (40, 105, 100, 20);
+	scrollbarMeanFilterSize.setBackground(Color.white);
 
-	// setting the position of scroll bar
-	scrollbarFilterSize.setBounds (40, 160, 100, 20);
-	scrollbarFilterSize.setBackground(Color.white);
-
-	scrollbarFilterSize.addAdjustmentListener(new AdjustmentListener() {
+	scrollbarMeanFilterSize.addAdjustmentListener(new AdjustmentListener() {
 		public void adjustmentValueChanged(AdjustmentEvent e) {
-			int filterValue = 1+2*scrollbarFilterSize.getValue();
-			if (scrollbarFilterSize.getValue() == 0){
+			int filterValue = 1+2*scrollbarMeanFilterSize.getValue();
+			if (scrollbarMeanFilterSize.getValue() == 0){
 				filterValue = 0;
 			}
-			filterSize.setText("Velikost filtru: " + filterValue);
+			meanSize.setText("Velikost filtru: " + filterValue + " px");
 			Renderer.sayMeow(filterValue);
 		}
 	});
 
-	add(scrollbarFilterSize);
-	add(filterSize);
+	Scrollbar scrollbarMedianFilterSize = new Scrollbar(HORIZONTAL, 0, 0, 0,  4);
+	scrollbarMedianFilterSize.setBounds (40, 205, 100, 20);
+	scrollbarMedianFilterSize.setBackground(Color.white);
+	add(scrollbarMedianFilterSize);
+	add(scrollbarMeanFilterSize);
+	add(medianSize);
+	add(meanSize);
+
+	scrollbarMedianFilterSize.addAdjustmentListener(new AdjustmentListener() {
+		public void adjustmentValueChanged(AdjustmentEvent e) {
+			int filterValue = 1+2*scrollbarMedianFilterSize.getValue();
+			if (scrollbarMedianFilterSize.getValue() == 0){
+				filterValue = 0;
+			}
+			medianSize.setText("Velikost filtru: " + filterValue + " px");
+			Renderer.sayMeow(filterValue);
+		}
+	});
+
+	checkBox1.addItemListener(new ItemListener() {
+		public void itemStateChanged(ItemEvent e) {
+			scrollbarMedianFilterSize.setEnabled(false);
+			scrollbarMeanFilterSize.setEnabled(true);
+			int filterValue = 1+2*scrollbarMeanFilterSize.getValue();
+			if (scrollbarMeanFilterSize.getValue() == 0){
+				filterValue = 0;
+			}
+			Renderer.changeMode(0,filterValue);
+		}
+	});
+
+	checkBox2.addItemListener(new ItemListener() {
+		public void itemStateChanged(ItemEvent e) {
+			scrollbarMedianFilterSize.setEnabled(true);
+			scrollbarMeanFilterSize.setEnabled(false);
+			int filterValue = 1+2*scrollbarMedianFilterSize.getValue();
+			if (scrollbarMedianFilterSize.getValue() == 0){
+				filterValue = 0;
+			}
+			Renderer.changeMode(1,filterValue);
+		}
+	});
+
 
 	Button buttonSelectImage = new Button("Vybrat obrázek");
 
 	// set the position for the button in frame
-	buttonSelectImage.setBounds(40,200,100,30);
+	buttonSelectImage.setBounds(40,280,100,30);
 	add(buttonSelectImage);
 
 	buttonSelectImage.addActionListener(new ActionListener() {

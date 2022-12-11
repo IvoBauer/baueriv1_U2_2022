@@ -38,7 +38,7 @@ public class Renderer extends AbstractRenderer{
     private OGLTexture2D textureNormal;
     private boolean mouseButton1;
     private double ox, oy;
-    private int loc_uFilterSize;
+    private int loc_uFilterSize, loc_uFilterMode;
 
     // PostProcessing
     private OGLRenderTarget renderTarget;
@@ -48,7 +48,8 @@ public class Renderer extends AbstractRenderer{
 
     // Obj
     private OGLModelOBJ objModel;
-    static int filterSize = 3;
+    static int filterSize = 0;
+    static int filterMode = 0;
     static String textureName = "./textures/noiseGirl.jpg";
     static boolean textureNameChanged = true;
 
@@ -80,6 +81,7 @@ public class Renderer extends AbstractRenderer{
         }
 
         loc_uFilterSize = glGetUniformLocation(shaderProgram, "u_FilterSize"); //Zvolený objekt k vykreslení
+        loc_uFilterMode = glGetUniformLocation(shaderProgram, "u_FilterMode"); //Zvolený objekt k vykreslení
         textureOriginal.flipY(new OGLTexImageFloat.Format(4));
         textureBase.flipY(new OGLTexImageFloat.Format(4));
         viewer = new OGLTexture2D.Viewer();
@@ -121,6 +123,8 @@ public class Renderer extends AbstractRenderer{
         // Zase vykresluj na obrazovku
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glUniform1i(loc_uFilterSize, filterSize);
+        glUniform1i(loc_uFilterMode, filterMode);
+
         // Render quadu přes obrazovku
         grid.getBuffers().draw(GL_TRIANGLES, shaderProgram);
         viewer.view(textureOriginal, -1, -1, 1);
@@ -156,9 +160,8 @@ public class Renderer extends AbstractRenderer{
         }
     };
 
-    public static void sayMeow(int meow){
-        System.out.println("RENDERER:" + meow);
-        filterSize = meow;
+    public static void sayMeow(int size){
+        filterSize = size;
     };
 
     private void getTexture(){
@@ -192,6 +195,11 @@ public class Renderer extends AbstractRenderer{
             textureNameChanged = true;
             System.out.println(FileName);
         }
+    }
+
+    public static void changeMode(int mode, int filterValue){
+        filterMode = mode;
+        filterSize = filterValue;
     }
 /*
 	@Override
