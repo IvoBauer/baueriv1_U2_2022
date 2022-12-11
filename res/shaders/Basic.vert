@@ -7,10 +7,12 @@ uniform mat4 u_Proj;
 out vec2 texCoords;
 
 void main() {
-    vec2 newpos = vec2(inPosition.x,inPosition.y-1.f);
     texCoords = inPosition;
-//    vec4 objectPosition = vec4(inPosition, 0.f, 1.f);
-    vec4 objectPosition = vec4(newpos, 0.5f, 1.f);
+
+    //Úprava pozice obrázku
+    vec2 newPos = vec2(inPosition.x,inPosition.y-1.f);
+    vec4 objectPosition = vec4(newPos, 0.5f, 1.f);
+
     gl_Position = objectPosition;
 }
 

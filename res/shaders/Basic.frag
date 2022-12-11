@@ -1,16 +1,16 @@
 #version 330
 in vec2 texCoords;
 
-uniform int u_FilterMode;
-uniform int u_FilterSize;
+uniform int u_FilterMode; //0 = mean, 1 = median filter
+uniform int u_FilterSize; //mean filter nabývá hodnot: 0,3,5,7,9,11,13,15 a median filter: 0,3,5,7
 uniform sampler2D textureBase;
-//uniform sampler2D textureNormal;
 
 out vec4 outColor;
 
-float arrayRedChannel[365];
-float arrayGreenChannel[365];
-float arrayBlueChannel[365];
+//Pokoušel jsem se nastavit přes uniform, ale dočetl jsem se, že to není možné. Takže jsem vypočetl pro nejvyšší filtr (15*15=225).
+float arrayRedChannel[225];
+float arrayGreenChannel[225];
+float arrayBlueChannel[225];
 
 void bubbleSort(int n)
 {
