@@ -76,38 +76,18 @@ public class AppMultiThreads {
 		testFrame.setSize(400,400);
 		testFrame.setLayout(null);
 
-		/*
-		 * keyAdapter = new KeyAdapter() {
-		 * 
-		 * @Override public void keyPressed(KeyEvent e) { if ((e.getModifiers()
-		 * & KeyEvent.ALT_MASK) != 0) { switch (e.getKeyCode()) { case
-		 * KeyEvent.VK_HOME: demoId = 1; setApp(testFrame, names[demoId - 1]);
-		 * 
-		 * break; case KeyEvent.VK_END: demoId = names.length; setApp(testFrame,
-		 * names[demoId - 1]); break; case KeyEvent.VK_LEFT: if (demoId > 1)
-		 * demoId--; setApp(testFrame, names[demoId - 1]); break; case
-		 * KeyEvent.VK_RIGHT: if (demoId < names.length) demoId++;
-		 * setApp(testFrame, names[demoId - 1]); break; } } }
-		 * 
-		 * };
-		 */
 		testFrame.setMenuBar(menuBar);
-//		testFrame.set
 		testFrame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				new Thread() {
 					@Override
 					public void run() {
-						// if (animator.isStarted())
-						// animator.stop();
 						System.exit(0);
 					}
 				}.start();
 			}
 		});
-
-		// testFrame.setTitle(ren.getClass().getName());
 
 		testFrame.pack();
 		testFrame.setVisible(true);
@@ -163,10 +143,11 @@ public class AppMultiThreads {
 	            	   }
 	            	});
 	            mainWindow.setVisible(true);
-	            mainWindow.setSize(200,400);
+	            mainWindow.setSize(220,400);
 
 				screenSize.getWidth();
-	            mainWindow.setLocation((int)screenSize.getHeight()/4+20, -200+((int) screenSize.getHeight())/2);
+	            mainWindow.setLocation((int)screenSize.getHeight()/4, -200+((int) screenSize.getHeight())/2);
+	            mainWindow.setTitle("PGRF3");
 			}
 		});
 		

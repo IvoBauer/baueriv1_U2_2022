@@ -52,7 +52,7 @@ public class LwjglWindowThread extends Thread {
 		String text = new String(renderer.getClass().getName() );
 		text = text.substring(0,text.lastIndexOf('.'));
 		// Create the window
-		window = glfwCreateWindow(WIDTH, HEIGHT, text, NULL, NULL);
+		window = glfwCreateWindow(WIDTH, HEIGHT, "Filtrace obrazu (Mean+Median) | Ivo Bauer CV2", NULL, NULL);
 		if ( window == NULL )
 			throw new RuntimeException("Failed to create the GLFW window");
 
@@ -84,8 +84,6 @@ public class LwjglWindowThread extends Thread {
 
 		// Make the window visible
 		glfwShowWindow(window);
-		
-		//System.out.println("GLFWThread: index:" + index + " window:" + window);
 		
 	}
 	
