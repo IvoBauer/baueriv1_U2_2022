@@ -1,4 +1,4 @@
-package p03swing;
+package ImageFilter;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;

@@ -1,11 +1,10 @@
-package p03swing;
+package ImageFilter;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.Callable;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import static javax.swing.SwingConstants.HORIZONTAL;
 

@@ -1,4 +1,4 @@
-package p03swing;
+package ImageFilter;
 
 import lwjglutils.OGLTextRenderer;
 import lwjglutils.OGLUtils;

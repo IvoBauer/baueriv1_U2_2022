@@ -1,6 +1,6 @@
 Přeji grafický den!
 
-V tomto projektu jsem zpracoval Median filtr a Mean filtr. K vytvoření GUI jsem použil projekt p03swing z ukázek.
+V tomto projektu jsem zpracoval Median filtr a Mean filtr. K vytvoření GUI jsem použil projekt ImageFilter z ukázek.
 
 Program se spouští ve třídě App. Po spuštění se zobrazí dvě okna.
 
@@ -12,7 +12,7 @@ Mean filter má rozsah 0,3,5,7,9,11,13,15 pixelů a Median filtr 0,3,5,7 pixelů
 
 Při stisknutí tlačítka "Vybrat obrázek" dojde k otevření složky textures. Zde jsem Vám pár obrázků vybral sám a pokud si chcete vybrat vlastní, musíte ho nejdřív mimo program vložit do res/textures.
 
-Znažil jsem se okomentovat veškerý vlastní kód. Zajímavé jsou tedy třídy:
+Znažil jsem se okomentovat veškerý vlastní kód. Zajímavé jsou především třídy:
     Basic.frag (Median filter, Mean filter)
     Renderer (obsluha GUI + vykreslení textur)
     AppWindow (vytvoření GUI)

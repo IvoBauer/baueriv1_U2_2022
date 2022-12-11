@@ -1,4 +1,4 @@
-package p03swing;
+package ImageFilter;
 
 import static org.lwjgl.glfw.GLFW.GLFW_COCOA_RETINA_FRAMEBUFFER;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
@@ -110,7 +110,7 @@ public class App {
 			// make new window with renderer in new thread
 		}
 		quit = new CountDownLatch(1);
-		thread = new LwjglWindowThread(0, quit, new p03swing.Renderer());
+		thread = new LwjglWindowThread(0, quit, new ImageFilter.Renderer());
 		window = thread.getWindow();
 		thread.start();
 		return null;
