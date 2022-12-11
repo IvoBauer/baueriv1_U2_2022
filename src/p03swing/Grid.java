@@ -42,8 +42,7 @@ public class Grid {
             }
         }
 
-
-        OGLBuffers.Attrib[] attribs = new OGLBuffers.Attrib[] {
+        OGLBuffers.Attrib[] attribs = new OGLBuffers.Attrib[]{
                 new OGLBuffers.Attrib("inPosition", 2),
         };
 

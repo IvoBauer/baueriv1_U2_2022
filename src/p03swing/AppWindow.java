@@ -72,7 +72,7 @@ public class AppWindow extends JFrame {
                     filterValue = 0;
                 }
                 meanSize.setText("Velikost filtru: " + filterValue + " px");
-                Renderer.sayMeow(filterValue);
+                Renderer.changeFilterValue(filterValue);
             }
         });
         scrollbarMedianFilterSize.addAdjustmentListener(new AdjustmentListener() {
@@ -82,7 +82,7 @@ public class AppWindow extends JFrame {
                     filterValue = 0;
                 }
                 medianSize.setText("Velikost filtru: " + filterValue + " px");
-                Renderer.sayMeow(filterValue);
+                Renderer.changeFilterValue(filterValue);
             }
         });
 
