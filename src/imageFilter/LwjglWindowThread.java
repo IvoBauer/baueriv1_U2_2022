@@ -1,4 +1,4 @@
-package ImageFilter;
+package imageFilter;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;

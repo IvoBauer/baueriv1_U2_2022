@@ -1,4 +1,4 @@
-package ImageFilter;
+package imageFilter;
 
 
 import lwjglutils.*;

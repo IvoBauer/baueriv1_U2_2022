@@ -1,4 +1,4 @@
-package ImageFilter;
+package imageFilter;
 
 import static org.lwjgl.glfw.GLFW.GLFW_COCOA_RETINA_FRAMEBUFFER;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
@@ -110,7 +110,7 @@ public class App {
 			// make new window with renderer in new thread
 		}
 		quit = new CountDownLatch(1);
-		thread = new LwjglWindowThread(0, quit, new ImageFilter.Renderer());
+		thread = new LwjglWindowThread(0, quit, new imageFilter.Renderer());
 		window = thread.getWindow();
 		thread.start();
 		return null;
