@@ -1,0 +1,91 @@
+Stručný popis ukázek pro PGRF
+struktura adresářů/package 
+├───annotations	anotace NotNull, Nullable
+│
+├───lvl0fixpipeline	package pro fixní pipeline OpenGL 
+│   ├───global	globální package pro sdílená třídy 
+│   ├───p00helloWorld	Hello World - vykreslení barevného trojúhelníka   
+│   ├───p01start		vykreslení trojúhelníka v aplikaci s ošetřením událostí 
+│   ├───p02elements		vykreslení bodových, liniových a plošných grafických elementů
+│   ├───p03transforms	aplikace prostorových transformací
+│   ├───p04light		osvětlení povrchu
+│   ├───p05texture		mapování textury
+│   ├───p06camera		pohledová transformace, použití kamery
+│   ├───p07viewport		zobrazení na více viewportů 
+│   ├───p08reflector	reflektorový zdroj světla
+│   ├───p09skyBox		zobrazení skyboxu
+│   ├───p10fog			aplikace mlhy
+│   ├───p11arrays		předávání geometrie pomocí polí, použití modelu v OBJ formátu
+│   ├───p12moveLight	druhy pohybu světla závislé-nezávislé na pozici pozorovatele-objektu
+│   └───p13culling	    rezimy nastavení optimalizace backface culling
+│
+│
+├───lvl1basic	package základních ukázek pro programovatelnou pipeline (shadery)
+│   ├───p00	Hello World - vykreslení barevného trojúhelníka   
+│   │   ├───p01withoutShaders	bez použití shaderů
+│   │   ├───p01withShader	s využitím shaderů a bez použití utils
+│   │   └───p02withUtils	s využitím lwjglutils
+│   ├───p01start
+│   │   ├───p01buffer		předání geometrie bufferem
+│   │   ├───p02attribute	nastavení atributů vrcholu (input proměnná ve vertex shaderu)
+│   │   ├───p03uniform		nastavení uniform proměnné – předání dat z aplikace do shaderů
+│   │   ├───p04utils		předání geometrie bufferem 
+│   │   ├───p05multiple		použití více shaderů
+│   │   ├───p06depthbuffer	řešení viditelnosti - zapnutí Zbuferu
+│   │   └───p07text			výpis textu do okna (TextRenderer)
+│   ├───p02geometry	zobrazení jednoduché geometrie
+│   │   ├───p01cube			krychle
+│   │   ├───p02strip		triangle strip
+│   │   └───p03obj			model v OBJ formátu
+│   ├───p03texture	mapování textury
+│   │   ├───p01intro		bez lwjglutils 
+│   │   ├───p02utils		s využitím lwjglutils
+│   │   └───p03multiple		více textur
+│   └───p04target	rendrování do textury
+│       ├───p01intro		bez lwjglutils 
+│       ├───p02utils		s využitím lwjglutils 
+│       └───p03postproces	dvou průchodový algoritmus pro zpracování rendrované textury
+│
+│
+├───lvl2advanced 	package rozšířených ukázek pro programovatelnou pipeline (shadery)
+│   ├───p01gui	tvorba GUI
+│   │   ├───p01simple	jedno oknová aplikace
+│   │   ├───p02threads	TODO více vláken
+│   │   ├───p03swing	TODO využítí swing
+│   │   └───p04others	GUI třetích stran
+│   │       ├───glfw
+│   │       └───nuklear
+│   ├───p02debug	debugování shaderů
+│   │   ├───p01notification		zapnutí-vypnutí výpisů
+│   │   ├───p02errors			výpis chyb u chybného volání OpenGL funkcí
+│   │   ├───p03individualCheck	testováním voláním kontrolních funkcí 
+│   │   └───p04debugCallback	kontrola callbackem 
+│   ├───p03texture	složitější mapování textur
+│   │   ├───p01quad			mapování rastrových obrazů na quad, náhled 2D textur, otočení Y
+│   │   ├───p02cubetexture	mapování na krychli, kubická 2D textura
+│   │   ├───p03volume		mapování 3D textur, náhled
+│   │   └───p04filtering	filtrace textur, generování MIP, interpolace, volba úrovně MIP
+│   ├───p04target	rendrování do textury
+│   │   ├───p01save				uložení obrazu do souboru
+│   │   ├───p02draw				kreslení do rasteru
+│   │   ├───p03bufferedimage	kreslení s využitím BufferedImage
+│   │   ├───p04multiple			rendrování do více textur zároveň
+│   │   └───p05gpgpu			zpracován negrafického výpočtu na GPU, zpracování bufferu – max, roll
+│   ├───p05pipeline	rozšířený řetězec na GPU
+│   │   ├───p01geometryshader	použití geometry shaderu
+│   │   ├───p02tesselation		použití teselačních shaderů
+│   │   ├───p03query			dotazy na GPU
+│   │   ├───p04moreShaders		kompilace shaderu uložených ve více souborech, sdílení funkcí 
+│   │   └───p05subrutine		volba metody shaderu pomocí nastavení v aplikaci
+│   ├───p06compute	požití compute shader
+│   │   ├───p01intro	dělení úloh na workgroupsu a tasks
+│   │   ├───p02buffer	zpracování bufferu, hledání maxima, výstup pouze do konsole
+│   │   ├───p03texture	zpracování textury v compute shaderu, nasledne zobrazeni 
+│   │   ├───p04game		Game of Life
+│   │   └───p05atomic	TODO práce s atomickými funkcemi, sdílení dat
+│   └───p07feedback	transform feedback
+│       ├───p01vs	čtení dat po zpracování ve vertex shaderu
+│       └───p02gs	čtení dat po zpracování ve vertex a geometry shaderu
+│
+├───lwjglutils	utility pro usnadnění práce s OpenGL pro programovatelnou pipeline
+└───transforms	třídy pro transformaci – matice, vektory, body, …

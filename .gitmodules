@@ -1,0 +1,6 @@
+[submodule "src/transforms"]
+	path = src/transforms
+	url = https://gitlab.com/honza.vanek/transforms.git
+[submodule "src/lwjglutils"]
+	path = src/lwjglutils
+	url = https://gitlab.com/Bruno.Jezek/lwjgl-utils.git
