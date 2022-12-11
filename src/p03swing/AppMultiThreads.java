@@ -166,7 +166,7 @@ public class AppMultiThreads {
 	            mainWindow.setSize(200,400);
 
 				screenSize.getWidth();
-	            mainWindow.setLocation((int)screenSize.getHeight()/3+20, -200+((int) screenSize.getHeight())/2);
+	            mainWindow.setLocation((int)screenSize.getHeight()/4+20, -200+((int) screenSize.getHeight())/2);
 			}
 		});
 		

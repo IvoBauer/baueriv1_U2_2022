@@ -7,12 +7,10 @@ uniform sampler2D textureBase;
 //uniform sampler2D textureNormal;
 
 out vec4 outColor;
-//const int filterMeow = 9;
 
-//minimum filterSize is 3
-float arrayRedChannel[130];
-float arrayGreenChannel[130];
-float arrayBlueChannel[130];
+float arrayRedChannel[50];
+float arrayGreenChannel[50];
+float arrayBlueChannel[50];
 
 void bubbleSort(int n)
 {
@@ -53,8 +51,6 @@ void bubbleSort(int n)
             }
         }
     }
-
-    //    bubbleSort(n-1); //toto se opakuje až do posledního prvku (n = 1)
 }
 
 vec4 obarviPixel(){
@@ -120,7 +116,13 @@ vec4 obarviPixel(){
 }
 
 void main() {
-    vec4 vyslednaBarva = obarviPixel();
+    vec4 vyslednaBarva;
+    if (u_FilterSize == 0){
+        vyslednaBarva = texture(textureBase, texCoords).rgba;
+    } else {
+        vyslednaBarva = obarviPixel();
+    }
+
     outColor = vyslednaBarva;
 }
 

@@ -49,7 +49,8 @@ public class Renderer extends AbstractRenderer{
     // Obj
     private OGLModelOBJ objModel;
     static int filterSize = 3;
-    static String textureName = "mosaic.jpg";
+    static String textureName = "./textures/noiseGirl.jpg";
+    static boolean textureNameChanged = true;
 
 
     @Override
@@ -69,8 +70,8 @@ public class Renderer extends AbstractRenderer{
         grid = new Grid(8, 8);
 
         try {
-            textureBase = new OGLTexture2D("./textures/mosaic.jpg");
-            textureOriginal = new OGLTexture2D("./textures/mosaic.jpg");
+            textureBase = new OGLTexture2D("./textures/noiseGirl.jpg");
+            textureOriginal = new OGLTexture2D("./textures/noiseGirl.jpg");
             textureNormal = new OGLTexture2D("./textures/bricksn.png");
             System.out.println("W: " + textureBase.getWidth() + " H: " + textureBase.getHeight());
             renderTarget = new OGLRenderTarget(textureBase.getWidth(), textureBase.getHeight());
@@ -103,7 +104,13 @@ public class Renderer extends AbstractRenderer{
 //        textRenderer.addStr2D(3, 50, "pass " + pass);
 //        textRenderer.addStr2D(width-90, height-3, " (c) PGRF UHK");
 //        textRenderer.draw();
-        getTexture();
+        if (textureNameChanged){
+            getTexture();
+            textureOriginal.flipY(new OGLTexImageFloat.Format(4));
+            textureBase.flipY(new OGLTexImageFloat.Format(4));
+            textureNameChanged = false;
+
+        }
 
         // Vykresluj do textury
         renderTarget.bind();
@@ -116,7 +123,7 @@ public class Renderer extends AbstractRenderer{
         glUniform1i(loc_uFilterSize, filterSize);
         // Render quadu přes obrazovku
         grid.getBuffers().draw(GL_TRIANGLES, shaderProgram);
-        viewer.view(textureOriginal, -1, -0.5, 1);
+        viewer.view(textureOriginal, -1, -1, 1);
     }
 
     private GLFWKeyCallback   keyCallback = new GLFWKeyCallback() {
@@ -156,6 +163,7 @@ public class Renderer extends AbstractRenderer{
 
     private void getTexture(){
         try {
+            textureOriginal = new OGLTexture2D(textureName);
             textureBase = new OGLTexture2D(textureName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -179,9 +187,10 @@ public class Renderer extends AbstractRenderer{
         File chosenFile = fileChooser.getSelectedFile();
         if(chosenFile.exists()){
 //            loadTexture("./textures/"+chosenFile.getName());
-            System.out.println(chosenFile);
             String FileName = "./textures/" + chosenFile.getName();
             textureName = FileName;
+            textureNameChanged = true;
+            System.out.println(FileName);
         }
     }
 /*

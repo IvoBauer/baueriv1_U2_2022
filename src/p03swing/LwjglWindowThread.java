@@ -13,8 +13,8 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class LwjglWindowThread extends Thread {
 
-	public static final int WIDTH = 600;
-    public static final int HEIGHT = 400;
+	public static final int WIDTH = 800;
+    public static final int HEIGHT = 500;
 
     // The window handle
 	private long window;

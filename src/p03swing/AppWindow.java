@@ -73,7 +73,7 @@ public AppWindow(Callable<Integer> setApp) {
 	});
 
 	Label labelMode = new Label ("Mód filtru:");
-	Label filterSize = new Label ("Velikost filtru: 3");
+	Label filterSize = new Label ("Velikost filtru: 0");
 
 	// set the location of label
 	labelMode.setBounds(30, 20, 100, 30);
@@ -83,7 +83,7 @@ public AppWindow(Callable<Integer> setApp) {
 	add(labelMode);
 
 
-	Scrollbar scrollbarFilterSize = new Scrollbar(HORIZONTAL, 0, 0, 0,  5);
+	Scrollbar scrollbarFilterSize = new Scrollbar(HORIZONTAL, 0, 0, 0,  4);
 
 	// setting the position of scroll bar
 	scrollbarFilterSize.setBounds (40, 160, 100, 20);
@@ -91,7 +91,10 @@ public AppWindow(Callable<Integer> setApp) {
 
 	scrollbarFilterSize.addAdjustmentListener(new AdjustmentListener() {
 		public void adjustmentValueChanged(AdjustmentEvent e) {
-			int filterValue = 3+2*scrollbarFilterSize.getValue();
+			int filterValue = 1+2*scrollbarFilterSize.getValue();
+			if (scrollbarFilterSize.getValue() == 0){
+				filterValue = 0;
+			}
 			filterSize.setText("Velikost filtru: " + filterValue);
 			Renderer.sayMeow(filterValue);
 		}
@@ -113,7 +116,6 @@ public AppWindow(Callable<Integer> setApp) {
 	});
 
 	// set size, layout and visibility of frame
-	setSize(400,400);
 	setLayout(null);
 	setVisible(true);
 

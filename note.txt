@@ -89,3 +89,4 @@ struktura adresářů/package
 │
 ├───lwjglutils	utility pro usnadnění práce s OpenGL pro programovatelnou pipeline
 └───transforms	třídy pro transformaci – matice, vektory, body, …
+//TODO
