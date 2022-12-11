@@ -27,7 +27,7 @@ import javax.swing.SwingUtilities;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.system.Platform;
 
-public class AppMultiThreads {
+public class App {
 
 	private Frame testFrame;
 	private int demoId = 1;
@@ -216,7 +216,7 @@ public class AppMultiThreads {
 	}
 
 	public static void main(String[] args) {
-		new AppMultiThreads().start();
+		new App().start();
 		    
 	}
 

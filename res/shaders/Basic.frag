@@ -1,8 +1,10 @@
 #version 330
 in vec2 texCoords;
 
-uniform int u_FilterMode; //0 = mean, 1 = median filter
-uniform int u_FilterSize; //mean filter nabývá hodnot: 0,3,5,7,9,11,13,15 a median filter: 0,3,5,7
+uniform int u_FilterMode;//0 = mean, 1 = median filter
+uniform int u_FilterSize;//mean filter nabývá hodnot: 0,3,5,7,9,11,13,15 a median filter: 0,3,5,7
+uniform int u_ImageWidth;
+uniform int u_ImageHeight;
 uniform sampler2D textureBase;
 
 out vec4 outColor;
@@ -12,6 +14,7 @@ float arrayRedChannel[225];
 float arrayGreenChannel[225];
 float arrayBlueChannel[225];
 
+//Seřadí jednotlivé barevné kanály (R,G,B) od nejmenší po největší hodnotu. Použití v Median filtru.
 void bubbleSort(int n)
 {
     for (int n = (u_FilterSize*u_FilterSize); n > 0; n--){
@@ -53,8 +56,10 @@ void bubbleSort(int n)
     }
 }
 
+//Vrací barvu vypočtenou pomocí mediánu barevných kanálů.
 vec4 getColorFromMedian(int pixelIndex){
-    //median
+
+    //V případě bodů umístěných na kraji je nutné doplnit pixely
     int numberOfMissingPixels = (u_FilterSize*u_FilterSize) - pixelIndex;
     for (int i = pixelIndex; i < numberOfMissingPixels; i++){
         arrayRedChannel[pixelIndex] = 0;
@@ -62,19 +67,25 @@ vec4 getColorFromMedian(int pixelIndex){
         arrayBlueChannel[pixelIndex] = 0;
     }
 
-    int testValue = u_FilterSize * u_FilterSize;
+    int count = u_FilterSize * u_FilterSize;
 
-    bubbleSort(testValue);
+    //Barevné kanály se setřídí od nejmenšího po největší
+    bubbleSort(count);
+
+    //Najde se pořadí mediánu
     highp int filterValue = int(round((u_FilterSize*u_FilterSize)/2.f));
-    vec4 colorFromMedian = vec4(arrayRedChannel[filterValue],arrayGreenChannel[filterValue],arrayBlueChannel[filterValue],1.f);
+
+    vec4 colorFromMedian = vec4(arrayRedChannel[filterValue], arrayGreenChannel[filterValue], arrayBlueChannel[filterValue], 1.f);
     return colorFromMedian;
 }
 
+//Vrací barvu vypočtenou pomocí průměru barevných kanálů.
 vec4 getColorFromMean(int pixelIndex){
     float red = 0;
     float green = 0;
     float blue = 0;
 
+    //Sečte jednotlivé barevné kanály
     for (int i = 0; i < pixelIndex; i++)
     {
         red += arrayRedChannel[i];
@@ -82,59 +93,57 @@ vec4 getColorFromMean(int pixelIndex){
         blue += arrayBlueChannel[i];
     }
 
-    vec4 colorFromMean = vec4(red/pixelIndex,green/pixelIndex,blue/pixelIndex,1.f);
+    //Součet barevných kanálů se jednotlivě vydělí počtem a získá se tak průměrná hodnota každého barevného kanálu.
+    vec4 colorFromMean = vec4(red/pixelIndex, green/pixelIndex, blue/pixelIndex, 1.f);
     return colorFromMean;
 }
 
-vec4 obarviPixel(){
-    int imageWidth = 716; //TODO
-    int imageHeight = 630;
+//Určí se začátek a konec filtru a do pole se uloží jednotlivé barevné kanály. Poté se zavolá přislušná funkce (mean,median) a vypočte se výsledná barva.
+vec4 getPixelColor(){
+    int imageWidth = u_ImageWidth;
+    int imageHeight = u_ImageHeight;
     float filterIndex = (u_FilterSize-1)/2;
-
-    float stepX = (1.0f/716.0f);
-    float stepY = (1.0f/630.0f);
 
     float startX = texCoords.x - filterIndex*(1.f/imageWidth);
     float endX = texCoords.x + filterIndex*(1.f/imageWidth);
     float startY = texCoords.y - filterIndex*(1.f/imageHeight);
     float endY = texCoords.y + filterIndex*(1.f/imageHeight);
 
-    //převod souřadnic z <0;1> na <0;imageWidth> a <0;imageHeight>
+    //Převod souřadnic z <0;1> na <0;imageWidth> a <0;imageHeight>
     highp int istartX = int(round(startX*imageWidth));
     highp int iendX = int(round(endX*imageWidth));
     highp int istartY = int(round(startY*imageHeight));
     highp int iendY = int(round(endY*imageHeight));
 
-    //upravení koncových bodů
+    //Upravení koncových bodů
     if (istartX < 0){
         istartX = 0;
     }
     if (iendX > imageWidth){
         iendX = imageWidth;
     }
-    if(istartY < 0){
+    if (istartY < 0){
         istartY = 0;
     }
-    if(iendY > imageHeight){
+    if (iendY > imageHeight){
         iendY = imageHeight;
     }
 
+    //Načtení pixelů polí podle barevných kanálů
     int pixelIndex = 0;
     for (int j = istartY; j <= iendY; j++){
         for (int i = istartX; i <= iendX; i++){
             float pixelPosX = i/ float(imageWidth);
             float pixelPosY = j/ float(imageHeight);
-            arrayRedChannel[pixelIndex] = texture(textureBase, vec2(pixelPosX,pixelPosY)).r;
-            arrayGreenChannel[pixelIndex] = texture(textureBase, vec2(pixelPosX,pixelPosY)).g;
-            arrayBlueChannel[pixelIndex] = texture(textureBase, vec2(pixelPosX,pixelPosY)).b;
+            arrayRedChannel[pixelIndex] = texture(textureBase, vec2(pixelPosX, pixelPosY)).r; //RED
+            arrayGreenChannel[pixelIndex] = texture(textureBase, vec2(pixelPosX, pixelPosY)).g; //GREEN
+            arrayBlueChannel[pixelIndex] = texture(textureBase, vec2(pixelPosX, pixelPosY)).b; //BLUE
             pixelIndex++;
         }
     }
 
-
-    vec4 calculatedColor = vec4(0.f, 1.f, 0.f,1.f);
-
-    //median
+    //Dle nastaveného módu se zvolí patřičná funkce pro výpočet barvy
+    vec4 calculatedColor;
     if (u_FilterMode == 1){
         calculatedColor = getColorFromMedian(pixelIndex);
     } else {
@@ -145,17 +154,9 @@ vec4 obarviPixel(){
 }
 
 void main() {
-    vec4 vyslednaBarva;
     if (u_FilterSize == 0){
-        vyslednaBarva = texture(textureBase, texCoords).rgba;
+        outColor = texture(textureBase, texCoords).rgba;
     } else {
-            vyslednaBarva = obarviPixel();
+        outColor = getPixelColor();
     }
-
-    outColor = vyslednaBarva;
 }
-
-
-//float array[3];
-//    vec4 baseColor = texture(textureBase, texCoords).rgba;
-//https://www.khronos.org/opengl/wiki/Data_Type_(GLSL) array/lists

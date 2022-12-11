@@ -7,10 +7,6 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
-import transforms.Camera;
-import transforms.Mat4;
-import transforms.Mat4PerspRH;
-import transforms.Vec3D;
 
 import javax.swing.*;
 import java.io.File;
@@ -31,12 +27,12 @@ public class Renderer extends AbstractRenderer {
     private int shaderProgram;
     private Grid grid;
     private OGLTexture2D textureBase, textureOriginal;
-    private int loc_uFilterSize, loc_uFilterMode;
+    private int loc_uFilterSize, loc_uFilterMode, loc_uImageHeight, loc_uImageWidth;
     private OGLRenderTarget renderTarget;
     private OGLTexture2D.Viewer viewer;
     static int filterSize = 0;
     static int filterMode = 0;
-    static String textureName = "./textures/noiseGirl.jpg";
+    static String textureName = "textures/NoiseGirl.jpg";
     static boolean textureNameChanged = true;
 
 
@@ -48,8 +44,8 @@ public class Renderer extends AbstractRenderer {
         grid = new Grid(8, 8);
 
         try {
-            textureBase = new OGLTexture2D("./textures/noiseGirl.jpg");
-            textureOriginal = new OGLTexture2D("./textures/noiseGirl.jpg");
+            textureBase = new OGLTexture2D("textures/NoiseGirl.jpg");
+            textureOriginal = new OGLTexture2D("textures/NoiseGirl.jpg");
             System.out.println("W: " + textureBase.getWidth() + " H: " + textureBase.getHeight());
             renderTarget = new OGLRenderTarget(textureBase.getWidth(), textureBase.getHeight());
         } catch (IOException e) {
@@ -58,6 +54,8 @@ public class Renderer extends AbstractRenderer {
 
         loc_uFilterSize = glGetUniformLocation(shaderProgram, "u_FilterSize");
         loc_uFilterMode = glGetUniformLocation(shaderProgram, "u_FilterMode");
+        loc_uImageWidth = glGetUniformLocation(shaderProgram, "u_ImageWidth");
+        loc_uImageHeight = glGetUniformLocation(shaderProgram, "u_ImageHeight");
         textureOriginal.flipY(new OGLTexImageFloat.Format(4));
         textureBase.flipY(new OGLTexImageFloat.Format(4));
         viewer = new OGLTexture2D.Viewer();
@@ -83,6 +81,8 @@ public class Renderer extends AbstractRenderer {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glUniform1i(loc_uFilterSize, filterSize);
         glUniform1i(loc_uFilterMode, filterMode);
+        glUniform1i(loc_uImageWidth, textureBase.getWidth());
+        glUniform1i(loc_uImageHeight, textureBase.getHeight());
 
         //Render quadu přes obrazovku
         grid.getBuffers().draw(GL_TRIANGLES, shaderProgram);
